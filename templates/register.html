@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}用户注册{% endblock %}
+
+{% block content %}
+
+    <!-- 显示闪现消息 -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <section id="register">
+        <h2>创建新账户</h2>
+        
+        <!-- 注册表单 -->
+        <form id="registerForm" action="/register" method="POST">
+
+            <!-- 输入邮箱部分 -->
+            <label for="email">电子邮件：</label>
+            <input type="email" id="email" name="email" required>
+            <button type="button" id="sendCodeBtn">发送验证码</button>
+            
+            <!-- 输入验证码部分 -->
+            <label for="verification_code">验证码：</label>
+            <input type="text" id="verification_code" name="verification_code" required>
+
+            <!-- 输入用户名和密码部分 -->
+            <label for="username">用户名：</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">密码：</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="confirm_password">确认密码：</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+
+            <input type="submit" value="注册">
+        </form>
+    </section>
+
+    <!-- JavaScript 用于发送验证码请求和检查密码一致性 -->
+    <script>
+    document.getElementById('sendCodeBtn').onclick = function () {
+        const email = document.getElementById('email').value;
+        if (email) {
+            // 通过 AJAX 请求发送验证码
+            fetch('/send_verification_code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'email=' + encodeURIComponent(email),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('验证码已发送到您的邮箱，请查收！');
+                } else {
+                    alert('验证码发送失败，请重试。');
+                }
+            });
+        } else {
+            alert('请先输入电子邮件。');
+        }
+    };
+
+    document.getElementById('registerForm').onsubmit = function () {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+        
+        if (password !== confirmPassword) {
+            alert('两次输入的密码不一致！');
+            return false;  // 阻止表单提交
+        }
+        return true;
+    }
+    </script>
+
+{% endblock %}

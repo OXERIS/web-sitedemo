@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}移民规划报告{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- 引入 Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>移民规划报告案例展示</h1>
+        <nav>
+            <ul class="nav-left">
+                <li><a href="{{ url_for('home') }}">首页</a></li>
+                <li><a href="{{ url_for('form') }}">填写问卷</a></li>
+                <li><a href="{{ url_for('case_page') }}">报告案例</a></li>
+                <li><a href="{{ url_for('home') }}#contact">联系我们</a></li>
+            </ul>
+            <ul class="nav-right">
+                {% if session.get('username') %}
+                    <li><a href="{{ url_for('scores') }}">我的评分</a></li>
+                    <li><a href="{{ url_for('profile') }}">欢迎, {{ session['username'] }}</a></li>
+                    <li><a href="{{ url_for('logout') }}" class="btn">登出</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('register') }}" class="register-btn">注册</a></li>
+                    <li><a href="{{ url_for('login') }}" class="login-btn">登录</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- 显示闪现消息 -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="flash-messages">
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>© 2024 移民规划报告服务</p>
+    </footer>
+</body>
+</html>

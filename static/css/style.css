@@ -1,0 +1,490 @@
+/* 保留原有的全局样式 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-left: 18px; /* 调整这个值以向右移动导航栏 */
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+section {
+    padding: 20px;
+}
+
+/* 登录注册区域样式 */
+.nav-right {
+    float: right;
+    margin-right: 20px;
+    margin-top: -50px;
+}
+
+/* 注册按钮样式 */
+.register-btn {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.login-btn {
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.register-btn:hover, .login-btn:hover {
+    background-color: #555;
+    color: white;
+}
+
+#home {
+    background-color: #f1f1f1;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+/* 表单样式 */
+form {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* 确保输入框宽度不超出边界 */
+}
+
+form input[type="submit"] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* 鼠标悬停和获取焦点时，输入框边框变色 */
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="password"]:focus,
+form input[type="date"]:focus {
+    border-color: #4CAF50;  /* 焦点时边框变为绿色 */
+}
+
+/* 问题页面淡入淡出效果 */
+.question-page {
+    margin-top: -50px; 
+    position: absolute;
+    width: 80%;
+    max-height: 400px;  /* 设置最大高度，防止页面过长 */
+    overflow-y: auto;  /* 如果内容超出高度则滚动显示 */
+    min-height: 330px;
+    top: 0;
+    left: 10%;
+    transition: opacity 0.5s ease;
+    opacity: 0;
+    background-color: white;
+    padding: 40px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 1;
+    height: auto;
+}
+
+/* 当前显示的问题页面，确保其逐渐显现 */
+.question-page.active {
+    opacity: 1; /* 显示时的透明度 */
+    z-index: 2; /* 保持在最上层 */
+}
+
+/* 淡入动画 */
+.fade-in {
+    opacity: 1;
+    transition: opacity 0.8s ease;
+}
+
+/* 淡出动画 */
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+/* 确保整个父容器高度一致，自动适应内容 */
+#questionnaireForm {
+    position: relative;
+    min-height: 100px;
+    transition: height 0.5s ease;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button[type="submit"] {
+    background-color: #008CBA;
+}
+/* 调整输入框和选择框的大小 */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="date"],
+form input[type="number"],
+form select {
+    width: 100%; /* 设置宽度为100%，让它填充父容器的宽度 */
+    padding: 13px; /* 增加内边距，调节高度 */
+    margin-top: 13px; /* 调整顶部的间距 */
+    margin-bottom: 13px; /* 调整底部的间距 */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px; /* 调整字体大小，提升可读性 */
+    box-sizing: border-box; /* 确保内边距和边框计算在宽度内 */
+}
+
+/* 问卷和控制台容器使用 flexbox 布局 */
+#formContainer {
+    display: flex;
+    justify-content: flex-start; /* 从左到右排列元素 */
+    align-items: flex-start; /* 顶部对齐 */
+    flex-wrap: nowrap; /* 避免换行，保持在同一行 */
+    width: 90%; /* 确保容器占满整个宽度 */
+    margin: 20px 0; /* 上下留出空间 */
+}
+
+/* 表单部分 */
+#form {
+    flex-grow: 1; /* 问卷部分占据主要的宽度空间 */
+    min-width: 100%; /* 保持问卷部分宽度适中 */
+    margin-right: 200px; /* 保持问卷和控制台之间的间距 */
+}
+
+/* 控制台部分 */
+
+
+/* 控制台中链接的样式 */
+/* 控制台样式调整 */
+#controlPanel {
+    position: sticky; /* 保持相对定位 */
+    top: 150px;
+    background-color: #f9f9f9;
+    padding: 50px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    margin-left: -600px; /* 修改为合适的左边距，使控制台与表单有适当距离 */
+    margin-top: 50px;/* 设置控制台竖直方向的位置 */
+    width: 250px; /* 设置合理的宽度 */
+    align-self: flex-start; /* 确保控制台与表单顶部对齐 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+}
+
+#questionLinks a {
+    display: block;
+    margin: 5px 0;
+    text-decoration: none;
+    color: red; /* 默认未完成为红色 */
+}
+
+#questionLinks a.completed {
+    color: green; /* 完成后为绿色 */
+}
+
+/* 移动端控制台调整 */
+@media (max-width: 768px) {
+    #formContainer {
+        flex-direction: column; /* 在移动端，表单和控制台垂直排列 */
+    }
+    #controlPanel {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 20px;
+    }
+}
+
+/* 提交按钮样式 */
+#submitButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+#submitButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* 响应式布局调整 */
+@media (max-width: 1024px) {
+    #formContainer {
+        flex-wrap: wrap; /* 在较小屏幕上换行 */
+    }
+
+    #form {
+        width: 100%; /* 在移动端占满整个宽度 */
+        margin-right: 0; /* 去掉和控制台的间距 */
+    }
+
+    #controlPanel {
+        width: 100%; /* 在移动端占满整个宽度 */
+        margin-top: 20px; /* 和表单保持适当距离 */
+    }
+}
+
+
+
+
+
+
+/* 评分页面专用样式 */
+.scores-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.scores-page .page-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.scores-page .page-title i {
+    color: #4CAF50;
+    margin-right: 10px;
+}
+
+.scores-page .score-section {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.scores-page .score-section h3 {
+    margin-top: 0;
+    color: #4CAF50;
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.scores-page .score-section h3 i {
+    margin-right: 10px;
+}
+
+.scores-page .score-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.scores-page .score-item span {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #333;
+}
+
+.scores-page .score-item span i {
+    margin-right: 10px;
+    color: #4CAF50;
+}
+
+.scores-page .progress-bar {
+    flex: 2;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    margin: 0 15px;
+    overflow: hidden;
+    height: 20px;
+}
+
+.scores-page .progress {
+    height: 100%;
+    background-color: #4CAF50;
+    width: 0%;
+    animation: progressAnimation 1s forwards;
+}
+
+.scores-page .score {
+    width: 80px;
+    text-align: right;
+    font-weight: bold;
+    color: #333;
+}
+
+.scores-page .score-total {
+    text-align: right;
+    font-size: 18px;
+    margin-top: 10px;
+    color: #333;
+}
+
+.scores-page .total-score {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.scores-page .total-score h3 {
+    font-size: 32px;
+    color: #4CAF50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scores-page .total-score h3 i {
+    margin-right: 10px;
+}
+
+/* 进度条动画 */
+@keyframes progressAnimation {
+    from {
+        width: 0%;
+    }
+    to {
+        width: var(--target-width);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 闪现消息的样式 */
+.flash-messages {
+    list-style: none; /* 去掉列表样式 */
+    padding: 0;
+    margin: 20px auto; /* 上下留空，自动水平居中 */
+    text-align: center; /* 文本居中 */
+}
+
+.flash-messages li {
+    font-size: 24px; /* 调整字体大小，放大提示 */
+    color: rgb(133, 223, 130); /* 根据需求设置字体颜色 */
+    font-weight: bold; /* 加粗字体 */
+    background-color: #dce7ea; /* 添加背景颜色（可选） */
+    padding: 10px;
+    border-radius: 5px; /* 圆角边框 */
+    width: fit-content; /* 让消息框根据内容自动调整大小 */
+    margin: 0 auto; /* 居中显示 */
+}

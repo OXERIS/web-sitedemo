@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}您的评分结果{% endblock %}
+
+{% block content %}
+<main class="scores-page">
+    <h2 class="page-title"><i class="fas fa-chart-line"></i> 您的评分结果</h2>
+    <div class="total-score">
+        <h3><i class="fas fa-star"></i> 您的总CRS得分：{{ scores['total_crs_score'] }}</h3>
+    </div>
+
+    <!-- 核心要素 / 人力资本因素 -->
+    <div class="score-section">
+        <h3><i class="fas fa-user"></i> 核心要素 / 人力资本因素</h3>
+        {% set max_age_score = 100 %}
+        {% set max_education_score = 140 %}
+        {% set max_language_score = 150 %}
+        {% set max_canadian_experience_score = 80 %}
+        <div class="score-item">
+            <span><i class="fas fa-birthday-cake"></i> 年龄得分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['age_score'] / max_age_score) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['age_score'] }}/{{ max_age_score }}</span>
+        </div>
+        <div class="score-item">
+            <span><i class="fas fa-graduation-cap"></i> 教育得分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['education_score'] / max_education_score) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['education_score'] }}/{{ max_education_score }}</span>
+        </div>
+        <div class="score-item">
+            <span><i class="fas fa-language"></i> 语言得分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['language_score'] / max_language_score) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['language_score'] }}/{{ max_language_score }}</span>
+        </div>
+        <div class="score-item">
+            <span><i class="fas fa-briefcase"></i> 加拿大工作经验得分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['canadian_experience_score'] / max_canadian_experience_score) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['canadian_experience_score'] }}/{{ max_canadian_experience_score }}</span>
+        </div>
+        <div class="score-total">
+            核心人力资本总得分：<strong>{{ scores['core_human_capital_score'] }}</strong>
+        </div>
+    </div>
+
+    <!-- 配偶或同居伴侣因素 -->
+    {% if scores['total_spouse_score'] and scores['total_spouse_score'] > 0 %}
+    <div class="score-section">
+        <h3><i class="fas fa-users"></i> 配偶或同居伴侣因素</h3>
+        {% set max_spouse_education_score = 10 %}
+        {% set max_spouse_language_score = 20 %}
+        {% set max_spouse_experience_score = 10 %}
+        <div class="score-item">
+            <span><i class="fas fa-graduation-cap"></i> 配偶教育得分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['spouse_education_score'] / max_spouse_education_score) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['spouse_education_score'] }}/{{ max_spouse_education_score }}</span>
+        </div>
+        <div class="score-item">
+            <span><i class="fas fa-language"></i> 配偶语言得分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['spouse_language_score'] / max_spouse_language_score) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['spouse_language_score'] }}/{{ max_spouse_language_score }}</span>
+        </div>
+        <div class="score-item">
+            <span><i class="fas fa-briefcase"></i> 配偶工作经验得分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['spouse_experience_score'] / max_spouse_experience_score) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['spouse_experience_score'] }}/{{ max_spouse_experience_score }}</span>
+        </div>
+        <div class="score-total">
+            配偶因素总得分：<strong>{{ scores['total_spouse_score'] }}</strong>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 技能迁移因素 -->
+    <div class="score-section">
+        <h3><i class="fas fa-sync-alt"></i> 技能迁移因素</h3>
+        {% set max_skill_transfer_score = 50 %}
+        <div class="score-item">
+            <span><i class="fas fa-graduation-cap"></i> 教育与语言能力结合得分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['education_language_skill_transferability_score'] / max_skill_transfer_score) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['education_language_skill_transferability_score'] }}/{{ max_skill_transfer_score }}</span>
+        </div>
+        <div class="score-item">
+            <span><i class="fas fa-graduation-cap"></i> 教育与加拿大工作经验结合得分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['education_canadian_experience_score'] / max_skill_transfer_score) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['education_canadian_experience_score'] }}/{{ max_skill_transfer_score }}</span>
+        </div>
+        <div class="score-item">
+            <span><i class="fas fa-globe"></i> 海外工作经验与语言能力结合得分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['foreign_language_skill_transferability_score'] / max_skill_transfer_score) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['foreign_language_skill_transferability_score'] }}/{{ max_skill_transfer_score }}</span>
+        </div>
+        <div class="score-item">
+            <span><i class="fas fa-globe"></i> 海外工作经验与加拿大工作经验结合得分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['foreign_canadian_experience_score'] / max_skill_transfer_score) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['foreign_canadian_experience_score'] }}/{{ max_skill_transfer_score }}</span>
+        </div>
+        <div class="score-item">
+            <span><i class="fas fa-certificate"></i> 证书技能转移得分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['certificate_skill_transferability_score'] / max_skill_transfer_score) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['certificate_skill_transferability_score'] }}/{{ max_skill_transfer_score }}</span>
+        </div>
+        <div class="score-total">
+            技能迁移总得分：<strong>{{ scores['total_skill_transferability_score'] }}</strong>
+        </div>
+    </div>
+
+    <!-- 额外加分 -->
+    <div class="score-section">
+        <h3><i class="fas fa-plus-circle"></i> 额外加分</h3>
+        {% set max_provincial_nomination_points = 600 %}
+        {% set max_arranged_employment_points = 200 %}
+        {% set max_sibling_points = 15 %}
+        {% set max_french_language_points = 50 %}
+        {% set max_canadian_education_points = 30 %}
+        <div class="score-item">
+            <span><i class="fas fa-map-marker-alt"></i> 省提名加分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['provincial_nomination_points'] / max_provincial_nomination_points) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['provincial_nomination_points'] }}/{{ max_provincial_nomination_points }}</span>
+        </div>
+        <div class="score-item">
+            <span><i class="fas fa-briefcase"></i> 安排工作加分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['arranged_employment_points'] / max_arranged_employment_points) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['arranged_employment_points'] }}/{{ max_arranged_employment_points }}</span>
+        </div>
+        <div class="score-item">
+            <span><i class="fas fa-user-friends"></i> 兄弟姐妹在加拿大加分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['sibling_points'] / max_sibling_points) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['sibling_points'] }}/{{ max_sibling_points }}</span>
+        </div>
+        <div class="score-item">
+            <span><i class="fas fa-language"></i> 法语能力加分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['french_language_points'] / max_french_language_points) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['french_language_points'] }}/{{ max_french_language_points }}</span>
+        </div>
+        <div class="score-item">
+            <span><i class="fas fa-school"></i> 加拿大教育加分</span>
+            <div class="progress-bar">
+                <div class="progress" style="--target-width: {{ (scores['canadian_education_points'] / max_canadian_education_points) * 100 }}%;"></div>
+            </div>
+            <span class="score">{{ scores['canadian_education_points'] }}/{{ max_canadian_education_points }}</span>
+        </div>
+        <div class="score-total">
+            额外加分总得分：<strong>{{ scores['total_additional_points'] }}</strong>
+        </div>
+    </div>
+</main>
+{% endblock %}

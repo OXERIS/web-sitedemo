@@ -1,0 +1,634 @@
+{% extends "base.html" %}
+
+{% block title %}填写问卷{% endblock %}
+
+{% block content %}
+<div id="formContainer" style="display: flex; justify-content: space-between; align-items: flex-start; margin: 20px;">
+    <section id="form" style="flex-grow: 1;">
+        <h2>填写问卷</h2>
+        <form id="questionnaireForm" method="POST" action="/form">
+            <!-- 第1页：目标移民国家 -->
+            <section class="question-page active" id="page1">
+                <h2>1、目标移民国家：</h2>
+                <label for="country">目标移民国家：</label>
+                <select id="country" name="country" required>
+                    <option value="">请选择</option>
+                    <option value="canada">加拿大</option>
+                    <option value="australia">澳大利亚</option>
+                </select>
+                <div class="navigation">
+                    <button type="button" onclick="nextPage(2)">下一步</button>
+                </div>
+            </section>
+
+            <!-- 第2页：是否有配偶 -->
+            <section class="question-page" id="page2">
+                <h2>2、您是否有配偶或同居伴侣？</h2>
+                <label for="hasPartner">有配偶或同居伴侣：</label>
+                <select id="hasPartner" name="hasPartner" required>
+                    <option value="">请选择</option>
+                    <option value="yes">是</option>
+                    <option value="no">否</option>
+                </select>
+                <div class="navigation">
+                    <button type="button" onclick="prevPage(1)">上一步</button>
+                    <button type="button" onclick="nextPage(3)">下一步</button>
+                </div>
+            </section>
+
+            <!-- 第3页：年龄 -->
+            <section class="question-page" id="page3">
+                <h2>3、您的年龄是多少？</h2>
+                <label for="age">年龄：</label>
+                <input type="number" id="age" name="age" required>
+                <div class="navigation">
+                    <button type="button" onclick="prevPage(2)">上一步</button>
+                    <button type="button" onclick="nextPage(4)">下一步</button>
+                </div>
+            </section>
+
+            <!-- 第4页：教育水平 -->
+            <section class="question-page" id="page4">
+                <h2>4、您的教育水平是什么？</h2>
+                <label for="educationLevel">教育水平：</label>
+                <select id="educationLevel" name="educationLevel" required onchange="showEducationDetails()">
+                    <option value="">请选择</option>
+                    <option value="less_than_secondary">低于中学（高中）学历</option>
+                    <option value="secondary_diploma">中学文凭（高中毕业）</option>
+                    <option value="one_year_degree">一年制学位、文凭或证书</option>
+                    <option value="two_year_program">两年制课程</option>
+                    <option value="bachelor_degree">学士学位或三年或以上的课程</option>
+                    <option value="two_or_more_degrees">两个或两个以上的证书、文凭或学位（其中至少一个是三年或以上的课程）</option>
+                    <option value="masters_or_professional">硕士学位，或需要执业资格的专业学位</option>
+                    <option value="doctoral_degree">博士学位</option>
+                </select>
+                <div id="educationDetails" class="details-box"></div>
+                <div class="navigation">
+                    <button type="button" onclick="prevPage(3)">上一步</button>
+                    <button type="button" onclick="nextPage(5)">下一步</button>
+                </div>
+            </section>
+            
+            <!-- 第5页：官方语言水平 -->
+            <section class="question-page" id="page5">
+                <h2>5、您的首位官方语言水平（英语）：</h2>
+                <p class="note">注意：不同 CLB 等级对应的雅思和托福分数可能需要进一步核实。</p>
+                <label for="english_reading">阅读：</label>
+                <div class="details-box" id="englishReadingDetails"></div>
+                <select id="english_reading" name="english_reading" required>
+                    <option value="">请选择</option>
+                    <option value="less_than_clb4">低于 CLB 4 (Less than CLB 4)</option>
+                    <option value="clb_4_or_5">CLB 4 或 5</option>
+                    <option value="clb_6">CLB 6</option>
+                    <option value="clb_7">CLB 7</option>
+                    <option value="clb_8">CLB 8</option>
+                    <option value="clb_9">CLB 9</option>
+                    <option value="clb_10_or_more">CLB 10 或以上 (CLB 10 or more)</option>
+                </select>
+                <label for="english_writing">写作：</label>
+                <div class="details-box" id="englishWritingDetails"></div>
+                <select id="english_writing" name="english_writing" required>
+                    <option value="">请选择</option>
+                    <option value="less_than_clb4">低于 CLB 4 (Less than CLB 4)</option>
+                    <option value="clb_4_or_5">CLB 4 或 5</option>
+                    <option value="clb_6">CLB 6</option>
+                    <option value="clb_7">CLB 7</option>
+                    <option value="clb_8">CLB 8</option>
+                    <option value="clb_9">CLB 9</option>
+                    <option value="clb_10_or_more">CLB 10 或以上 (CLB 10 or more)</option>
+                </select>
+                <label for="english_speaking">口语：</label>
+                <div class="details-box" id="englishSpeakingDetails"></div>
+                <select id="english_speaking" name="english_speaking" required>
+                    <option value="">请选择</option>
+                    <option value="less_than_clb4">低于 CLB 4 (Less than CLB 4)</option>
+                    <option value="clb_4_or_5">CLB 4 或 5</option>
+                    <option value="clb_6">CLB 6</option>
+                    <option value="clb_7">CLB 7</option>
+                    <option value="clb_8">CLB 8</option>
+                    <option value="clb_9">CLB 9</option>
+                    <option value="clb_10_or_more">CLB 10 或以上 (CLB 10 or more)</option>
+                </select>
+                <label for="english_listening">听力：</label>
+                <div class="details-box" id="englishListeningDetails"></div>
+                <select id="english_listening" name="english_listening" required>
+                    <option value="">请选择</option>
+                    <option value="less_than_clb4">低于 CLB 4 (Less than CLB 4)</option>
+                    <option value="clb_4_or_5">CLB 4 或 5</option>
+                    <option value="clb_6">CLB 6</option>
+                    <option value="clb_7">CLB 7</option>
+                    <option value="clb_8">CLB 8</option>
+                    <option value="clb_9">CLB 9</option>
+                    <option value="clb_10_or_more">CLB 10 或以上 (CLB 10 or more)</option>
+                </select>
+                <div class="navigation">
+                    <button type="button" onclick="prevPage(4)">上一步</button>
+                    <button type="button" onclick="nextPage(6)">下一步</button>
+                </div>
+            </section>
+
+            <!-- 第6页：第二官方语言水平（法语） -->
+            <section class="question-page" id="page6">
+                <h2>6、您的第二官方语言水平（法语）：</h2>
+                <label for="french_reading">阅读：</label>
+                <select id="french_reading" name="french_reading" required>
+                    <option value="">请选择</option>
+                    <option value="less_than_clb4">低于 CLB 4 (Less than CLB 4)</option>
+                    <option value="clb_5_or_6">CLB 5 或 6</option>
+                    <option value="clb_7_or_8">CLB 7 或 8</option>
+                    <option value="clb_9_or_more">CLB 9 或以上 (CLB 9 or more)</option>
+                </select>
+                <label for="french_writing">写作：</label>
+                <select id="french_writing" name="french_writing" required>
+                    <option value="">请选择</option>
+                    <option value="less_than_clb4">低于 CLB 4 (Less than CLB 4)</option>
+                    <option value="clb_5_or_6">CLB 5 或 6</option>
+                    <option value="clb_7_or_8">CLB 7 或 8</option>
+                    <option value="clb_9_or_more">CLB 9 或以上 (CLB 9 or more)</option>
+                </select>
+                <label for="french_speaking">口语：</label>
+                <select id="french_speaking" name="french_speaking" required>
+                    <option value="">请选择</option>
+                    <option value="less_than_clb4">低于 CLB 4 (Less than CLB 4)</option>
+                    <option value="clb_5_or_6">CLB 5 或 6</option>
+                    <option value="clb_7_or_8">CLB 7 或 8</option>
+                    <option value="clb_9_or_more">CLB 9 或以上 (CLB 9 or more)</option>
+                </select>
+                <label for="french_listening">听力：</label>
+                <select id="french_listening" name="french_listening" required>
+                    <option value="">请选择</option>
+                    <option value="less_than_clb4">低于 CLB 4 (Less than CLB 4)</option>
+                    <option value="clb_5_or_6">CLB 5 或 6</option>
+                    <option value="clb_7_or_8">CLB 7 或 8</option>
+                    <option value="clb_9_or_more">CLB 9 或以上 (CLB 9 or more)</option>
+                </select>
+                <div class="navigation">
+                    <button type="button" onclick="prevPage(5)">上一步</button>
+                    <button type="button" onclick="nextPage(7)">下一步</button>
+                </div>
+            </section>
+
+            <!-- 第7页：工作年限 -->
+            <section class="question-page" id="page7">
+                <h2>7、您的工作年限是多少？</h2>
+                <p>实际在加拿大的全职或等效兼职工作经验。</p>
+                <label for="years_of_experience">工作年限：</label>
+                <select id="years_of_experience" name="years_of_experience" required>
+                    <option value="">请选择</option>
+                    <option value="none_or_less_than_one">无或不足一年 (None or less than a year)</option>
+                    <option value="one_year">1 年 (1 year)</option>
+                    <option value="two_years">2 年 (2 years)</option>
+                    <option value="three_years">3 年 (3 years)</option>
+                    <option value="four_years">4 年 (4 years)</option>
+                    <option value="five_or_more_years">5 年或以上 (5 years or more)</option>
+                </select>
+                <div class="navigation">
+                    <button type="button" onclick="prevPage(6)">上一步</button>
+                    <button type="button" onclick="nextPage(8)">下一步</button>
+                </div>
+            </section>
+            
+            <!-- 第8页：配偶教育水平 -->
+            <section class="question-page" id="page8">
+                <h2>8、您的配偶或同居伴侣的教育水平是什么？</h2>
+                <label for="spouse_education_level">配偶教育水平：</label>
+                <select id="spouse_education_level" name="spouse_education_level" required>
+                    <option value="">请选择</option>
+                    <option value="less_than_secondary">低于中学（高中）学历 (Less than secondary school [high school])</option>
+                    <option value="secondary_diploma">中学文凭（高中毕业）(Secondary school [high school graduation])</option>
+                    <option value="one_year_program">一年制课程，由大学、学院、职业学校、技术学校或其他教育机构颁发 (One-year program at a university, college, trade or technical school, or other institute)</option>
+                    <option value="two_year_program">两年制课程，由大学、学院、职业学校或其他教育机构提供 (Two-year program at a university, college, trade or technical school, or other institute)</option>
+                    <option value="bachelor_degree">学士学位或三年或以上的课程，由大学、学院、职业学校、技术学校或其他教育机构提供 (Bachelor’s degree OR a three or more year program at a university, college, trade or technical school, or other institute)</option>
+                    <option value="two_or_more_degrees">两个或两个以上的证书、文凭或学位，其中至少一个是三年或以上的课程 (Two or more certificates, diplomas, or degrees. One must be for a program of three or more years)</option>
+                    <option value="masters_or_professional">硕士学位，或需要执业资格的专业学位 (Master’s degree, or professional degree needed to practice in a licensed profession)</option>
+                    <option value="doctoral_degree">博士学位 (Doctoral level university degree [Ph.D.])</option>
+                </select>
+                <div class="navigation">
+                    <button type="button" onclick="prevPage(7)">上一步</button>
+                    <button type="button" onclick="nextPage(9)">下一步</button>
+                </div>
+            </section>
+
+           <!-- 配偶英语水平 -->
+            <section class="question-page" id="page9">
+                <h2>9、您的配偶或同居伴侣的英语水平：</h2>
+
+                <!-- 阅读能力 -->
+                <label for="spouse_english_reading">阅读：</label>
+                <select id="spouse_english_reading" name="spouse_english_reading" required onchange="showSpouseEnglishDetails('reading')">
+                    <option value="">请选择</option>
+                    <option value="less_than_clb4">低于 CLB 4</option>
+                    <option value="clb_5_or_6">CLB 5 或 6</option>
+                    <option value="clb_7_or_8">CLB 7 或 8</option>
+                    <option value="clb_9_or_more">CLB 9 或以上</option>
+                </select>
+                <div id="spouseEnglishReadingDetails" class="details-box"></div>
+
+                <!-- 写作能力 -->
+                <label for="spouse_english_writing">写作：</label>
+                <select id="spouse_english_writing" name="spouse_english_writing" required onchange="showSpouseEnglishDetails('writing')">
+                    <option value="">请选择</option>
+                    <option value="less_than_clb4">低于 CLB 4</option>
+                    <option value="clb_5_or_6">CLB 5 或 6</option>
+                    <option value="clb_7_or_8">CLB 7 或 8</option>
+                    <option value="clb_9_or_more">CLB 9 或以上</option>
+                </select>
+                <div id="spouseEnglishWritingDetails" class="details-box"></div>
+
+                <!-- 口语能力 -->
+                <label for="spouse_english_speaking">口语：</label>
+                <select id="spouse_english_speaking" name="spouse_english_speaking" required onchange="showSpouseEnglishDetails('speaking')">
+                    <option value="">请选择</option>
+                    <option value="less_than_clb4">低于 CLB 4</option>
+                    <option value="clb_5_or_6">CLB 5 或 6</option>
+                    <option value="clb_7_or_8">CLB 7 或 8</option>
+                    <option value="clb_9_or_more">CLB 9 或以上</option>
+                </select>
+                <div id="spouseEnglishSpeakingDetails" class="details-box"></div>
+
+                <!-- 听力能力 -->
+                <label for="spouse_english_listening">听力：</label>
+                <select id="spouse_english_listening" name="spouse_english_listening" required onchange="showSpouseEnglishDetails('listening')">
+                    <option value="">请选择</option>
+                    <option value="less_than_clb4">低于 CLB 4</option>
+                    <option value="clb_5_or_6">CLB 5 或 6</option>
+                    <option value="clb_7_or_8">CLB 7 或 8</option>
+                    <option value="clb_9_or_more">CLB 9 或以上</option>
+                </select>
+                <div id="spouseEnglishListeningDetails" class="details-box"></div>
+
+                <div class="navigation">
+                    <button type="button" onclick="prevPage(8)">上一步</button>
+                    <button type="button" onclick="nextPage(10)">下一步</button>
+                </div>
+            </section>
+
+            <!-- 第10页：配偶工作年限 -->
+            <section class="question-page" id="page10">
+                <h2>10、您的配偶或同居伴侣的工作年限：</h2>
+                <label for="spouse_years_of_experience">配偶工作年限：</label>
+                <select id="spouse_years_of_experience" name="spouse_years_of_experience" required>
+                    <option value="">请选择</option>
+                    <option value="none_or_less_than_one">无或不足一年 (None or less than a year)</option>
+                    <option value="one_year">1 年 (1 year)</option>
+                    <option value="two_years">2 年 (2 years)</option>
+                    <option value="three_years">3 年 (3 years)</option>
+                    <option value="four_years">4 年 (4 years)</option>
+                    <option value="five_or_more_years">5 年或以上 (5 years or more)</option>
+                </select>
+                <div class="navigation">
+                    <button type="button" onclick="prevPage(9)">上一步</button>
+                    <button type="button" onclick="nextPage(11)">下一步</button>
+                </div>
+            </section>
+
+            <!-- 第11页：海外工作年限 -->
+            <section class="question-page" id="page11">
+                <h2>11、您的海外工作年限是多少？</h2>
+                <label for="foreign_work_experience">海外工作年限：</label>
+                <select id="foreign_work_experience" name="foreign_work_experience" required>
+                    <option value="">请选择</option>
+                    <option value="no_foreign_experience">无海外工作经验 (No foreign work experience)</option>
+                    <option value="one_or_two_years">1-2 年海外工作经验 (1 or 2 years of foreign work experience)</option>
+                    <option value="three_or_more_years">3 年或以上海外工作经验 (3 years or more of foreign work experience)</option>
+                </select>
+                <div class="navigation">
+                    <button type="button" onclick="prevPage(10)">上一步</button>
+                    <button type="button" onclick="nextPage(12)">下一步</button>
+                </div>
+            </section>
+
+            <!-- 第12页：兄弟姐妹在加拿大的情况 -->
+            <section class="question-page" id="page12">
+                <h2>12、您是否有兄弟或姐妹是加拿大公民或永久居民？</h2>
+                <label for="sibling_in_canada">是否有兄弟或姐妹是加拿大公民或永久居民：</label>
+                <select id="sibling_in_canada" name="sibling_in_canada" required>
+                    <option value="">请选择</option>
+                    <option value="yes">是 (Yes)</option>
+                    <option value="no">否 (No)</option>
+                </select>
+                <div class="navigation">
+                    <button type="button" onclick="prevPage(11)">上一步</button>
+                    <button type="button" onclick="nextPage(13)">下一步</button>
+                </div>
+            </section>
+
+            <!-- 第13页：是否有安排好的工作 -->
+            <section class="question-page" id="page13">
+                <h2>13、您是否有安排好的工作？</h2>
+                <p class="note">说明：安排好的工作必须符合 TEER 0 类别的具体职业标准。</p>
+                <label for="arranged_employment">是否有安排好的工作：</label>
+                <select id="arranged_employment" name="arranged_employment" required>
+                    <option value="">请选择</option>
+                    <option value="none">无 (None)</option>
+                    <option value="teer_0_major_00">安排好的工作 – NOC TEER 0 主要群体 00 (Arranged employment – NOC TEER 0 Major group 00)</option>
+                    <option value="teer_1_2_3_or_other_0">安排好的工作 – NOC TEER 1、2 或 3，或任何 TEER 0 但非主要群体 00 (Arranged employment – NOC TEER 1, 2 or 3, or any TEER 0 other than Major group 00)</option>
+                </select>
+                <div class="navigation">
+                    <button type="button" onclick="prevPage(12)">上一步</button>
+                    <button type="button" onclick="nextPage(14)">下一步</button>
+                </div>
+            </section>
+
+            <!-- 第14页：是否获得省提名 -->
+            <section class="question-page" id="page14">
+                <h2>14、您是否获得了省提名？</h2>
+                <label for="provincial_nomination">是否获得省提名：</label>
+                <select id="provincial_nomination" name="provincial_nomination" required>
+                    <option value="">请选择</option>
+                    <option value="yes">是 (Yes)</option>
+                    <option value="no">否 (No)</option>
+                </select>
+                <div class="navigation">
+                    <button type="button" onclick="prevPage(13)">上一步</button>
+                    <button type="button" onclick="nextPage(15)">下一步</button>
+                </div>
+            </section>
+
+            <!-- 第15页：是否用于加拿大职业资格证书 -->
+            <section class="question-page" id="page15">
+                <h2>15、是否拥有加拿大职业资格证书？</h2>
+                <label for="canadian_professional_certificate">是否拥有加拿大职业资格证书：</label>
+                <select id="canadian_professional_certificate" name="canadian_professional_certificate" required>
+                    <option value="">请选择</option>
+                    <option value="yes">是 (Yes)</option>
+                    <option value="no">否 (No)</option>
+                </select>
+                <div class="navigation">
+                    <button type="button" onclick="prevPage(14)">上一步</button>
+                </div>
+            </section>
+
+        </form>
+    </section>
+
+    <div id="controlPanel">
+        <h3>问卷控制台</h3>
+        <div id="questionLinks" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+        <!-- 修复提交按钮的问题：确保调用正确的 JavaScript 函数提交表单 -->
+        <button id="submitButton" type="button" onclick="submitForm()" disabled>提交问卷</button>
+    </div>
+</div>
+
+<!-- JavaScript 代码放在这里 -->
+<script>
+let currentPage = 1;
+
+function nextPage(nextPageNumber) {
+    const currentPageElement = document.getElementById(`page${currentPage}`);
+    const nextPageElement = document.getElementById(`page${nextPageNumber}`);
+    
+    // 当前页面淡出
+    currentPageElement.classList.add('fade-out');
+    currentPageElement.classList.remove('active');
+
+    // 短暂延迟后，下一页面淡入
+    setTimeout(() => {
+        currentPageElement.classList.remove('fade-out');
+        nextPageElement.classList.add('active');
+
+        // 更新当前页码
+        currentPage = nextPageNumber;
+
+        // 清理动画类，避免冲突
+        setTimeout(() => {
+            nextPageElement.classList.remove('fade-in');
+        }, 300);  // 保持与CSS动画时间一致
+
+        // 更新题目统计
+        updateQuestionStats();
+    }, 200);  // 小延迟确保顺序正确
+}
+
+function prevPage(prevPageNumber) {
+    const currentPageElement = document.getElementById(`page${currentPage}`);
+    const prevPageElement = document.getElementById(`page${prevPageNumber}`);
+
+    // 当前页面淡出
+    currentPageElement.classList.add('fade-out');
+    currentPageElement.classList.remove('active');
+
+    // 短暂延迟后，上一页面淡入
+    setTimeout(() => {
+        currentPageElement.classList.remove('fade-out');
+        prevPageElement.classList.add('active');
+
+        // 更新当前页码
+        currentPage = prevPageNumber;
+
+        // 清理动画类，避免冲突
+        setTimeout(() => {
+            prevPageElement.classList.remove('fade-in');
+        }, 300);  // 保持与CSS动画时间一致
+
+        // 更新题目统计
+        updateQuestionStats();
+    }, 200);  // 小延迟确保顺序正确
+}
+
+// 添加 goToPage 函数，用于从控制台链接切换页面
+function goToPage(pageNumber) {
+    const currentPageElement = document.getElementById(`page${currentPage}`);
+    const targetPageElement = document.getElementById(`page${pageNumber}`);
+    
+    // 当前页面淡出
+    currentPageElement.classList.add('fade-out');
+    currentPageElement.classList.remove('active');
+
+    // 短暂延迟后，目标页面淡入
+    setTimeout(() => {
+        currentPageElement.classList.remove('fade-out');
+        targetPageElement.classList.add('active');
+
+        // 更新当前页码
+        currentPage = pageNumber;
+
+        // 清理动画类，避免冲突
+        setTimeout(() => {
+            targetPageElement.classList.remove('fade-in');
+        }, 300);  // 保持与CSS动画时间一致
+
+        // 更新题目统计
+        updateQuestionStats();
+    }, 200);  // 小延迟确保顺序正确
+}
+
+function updateQuestionStats() {
+    const totalQuestions = document.querySelectorAll('.question-page').length;
+    let completedQuestions = 0;
+
+    document.querySelectorAll('.question-page').forEach((page, index) => {
+        if (index >= 0 && index < totalQuestions) {
+            const inputs = page.querySelectorAll('input, select');
+            const allFilled = Array.from(inputs).every(input => input.value);
+            const linkElement = document.getElementById(`link${index + 1}`);
+
+            if (linkElement) {  // 检查 linkElement 是否存在
+                if (allFilled) {
+                    completedQuestions++;
+                    linkElement.style.color = 'green';
+                } else {
+                    linkElement.style.color = 'red';
+                }
+            }
+        }
+    });
+
+    // 如果所有问题都完成，启用提交按钮
+    document.getElementById('submitButton').disabled = completedQuestions !== totalQuestions;
+}
+
+window.onload = function() {
+    const firstPage = document.getElementById('page1');
+    const formElement = document.getElementById('questionnaireForm');
+
+    // 设置表单容器初始高度
+    formElement.style.height = `${firstPage.offsetHeight}px`;
+    firstPage.classList.add('active');
+
+    // 初始化控制台链接
+    const totalQuestions = document.querySelectorAll('.question-page').length;
+    const questionLinksContainer = document.getElementById('questionLinks');
+    questionLinksContainer.innerHTML = '';  // 清空旧链接，确保刷新后不重复添加
+
+    for (let i = 1; i <= totalQuestions; i++) {
+        const link = document.createElement('a');
+        link.href = "javascript:void(0);";  // 防止页面刷新
+        link.textContent = `题号 ${i}`;
+        link.id = `link${i}`;
+        link.style.color = 'red';
+        link.classList.add('question-link');
+        link.onclick = function() {
+            goToPage(i);  // 点击链接时调用 goToPage 函数
+        };
+        questionLinksContainer.appendChild(link);
+    }
+
+    updateQuestionStats();  // 初始化链接完成后再更新题目统计
+};
+
+// 显示英语水平的详细信息
+function showEnglishDetails() {
+    const levels = {
+        'less_than_clb4': '低于 CLB 4 相当于雅思 3.5 分或以下，托福 31 分或以下',
+        'clb_4_or_5': 'CLB 4 或 5 相当于雅思 4.0 - 5.0 分，托福 32 - 45 分',
+        'clb_6': 'CLB 6 相当于雅思 5.5 分，托福 46 - 59 分',
+        'clb_7': 'CLB 7 相当于雅思 6.0 分，托福 60 - 78 分',
+        'clb_8': 'CLB 8 相当于雅思 6.5 分，托福 79 - 93 分',
+        'clb_9': 'CLB 9 相当于雅思 7.0 分，托福 94 - 101 分',
+        'clb_10_or_more': 'CLB 10 或以上相当于雅思 7.5 分或以上，托福 102 分或以上'
+    };
+
+    const reading = document.getElementById('english_reading').value;
+    const writing = document.getElementById('english_writing').value;
+    const speaking = document.getElementById('english_speaking').value;
+    const listening = document.getElementById('english_listening').value;
+
+    document.getElementById('englishReadingDetails').textContent = levels[reading];
+    document.getElementById('englishWritingDetails').textContent = levels[writing];
+    document.getElementById('englishSpeakingDetails').textContent = levels[speaking];
+    document.getElementById('englishListeningDetails').textContent = levels[listening];
+}
+
+// 显示教育水平的详细信息
+function showEducationDetails() {
+    const details = {
+        'less_than_secondary': 'Less than secondary school [high school]',
+        'secondary_diploma': '中学文凭（高中毕业）Secondary school [high school graduation',
+        'one_year_degree': '一年制课程，由大学、学院、职业学校、技术学校或其他教育机构颁发 (One-year program at a university, college, trade or technical school, or other institute)',
+        'two_year_program': '两年制课程，由大学、学院、职业学校或其他教育机构提供 (Two-year program at a university, college, trade or technical school, or other institute)',
+        'bachelor_degree': '学士学位或三年或以上的课程，由大学、学院、职业学校、技术学校或其他教育机构提供 (Bachelor’s degree OR a three or more year program at a university, college, trade or technical school, or other institute)',
+        'two_or_more_degrees': '两个或两个以上的证书、文凭或学位，其中至少一个是三年或以上的课程 (Two or more certificates, diplomas, or degrees. One must be for a program of three or more years)）',
+        'masters_or_professional': '硕士学位，或需要执业资格的专业学位（专业学位课程必须为：医学、兽医学、牙医学、验光、法学、脊椎按摩医学或药学）(Master’s degree, or professional degree needed to practice in a licensed profession [For “professional degree,” the degree program must have been in: medicine, veterinary medicine, dentistry, optometry, law, chiropractic medicine, or pharmacy.])',
+        'doctoral_degree': '博士学位'
+    };
+
+    const educationLevel = document.getElementById('educationLevel').value;
+    document.getElementById('educationDetails').textContent = details[educationLevel];
+}
+
+// 在语言选择和教育水平变化时显示详细信息
+document.getElementById('english_reading').addEventListener('change', showEnglishDetails);
+document.getElementById('english_writing').addEventListener('change', showEnglishDetails);
+document.getElementById('english_speaking').addEventListener('change', showEnglishDetails);
+document.getElementById('english_listening').addEventListener('change', showEnglishDetails);
+document.getElementById('educationLevel').addEventListener('change', showEducationDetails);
+
+// 配偶语言水平详细信息
+function showSpouseEnglishDetails(type) {
+    const levels = {
+        'less_than_clb4': '相当于雅思 3.5 分或以下，托福 31 分或以下',
+        'clb_5_or_6': '相当于雅思 4.0 - 5.0 分，托福 32 - 45 分',
+        'clb_7_or_8': '相当于雅思 6.0 - 6.5 分，托福 60 - 93 分',
+        'clb_9_or_more': '相当于雅思 7.0 分或以上，托福 94 分或以上'
+    };
+
+    let selectElement, detailsElement;
+    switch (type) {
+        case 'reading':
+            selectElement = document.getElementById('spouse_english_reading');
+            detailsElement = document.getElementById('spouseEnglishReadingDetails');
+            break;
+        case 'writing':
+            selectElement = document.getElementById('spouse_english_writing');
+            detailsElement = document.getElementById('spouseEnglishWritingDetails');
+            break;
+        case 'speaking':
+            selectElement = document.getElementById('spouse_english_speaking');
+            detailsElement = document.getElementById('spouseEnglishSpeakingDetails');
+            break;
+        case 'listening':
+            selectElement = document.getElementById('spouse_english_listening');
+            detailsElement = document.getElementById('spouseEnglishListeningDetails');
+            break;
+    }
+
+    const selectedValue = selectElement.value;
+    detailsElement.textContent = levels[selectedValue] || '';
+}
+
+
+
+
+
+
+
+
+// 新增 submitForm 函数，用于提交表单
+function submitForm() {
+    document.getElementById('questionnaireForm').submit();
+}
+
+// 配偶英语水平评分计算
+function calculateSpouseScore() {
+    // 评分标准
+    const scoreMapping = {
+        "less_than_clb4": 0,
+        "clb_5_or_6": 1,
+        "clb_7_or_8": 3,
+        "clb_9_or_more": 5
+    };
+
+    // 获取配偶的英语能力选项
+    const reading = document.getElementById('spouse_english_reading').value;
+    const writing = document.getElementById('spouse_english_writing').value;
+    const speaking = document.getElementById('spouse_english_speaking').value;
+    const listening = document.getElementById('spouse_english_listening').value;
+
+    // 计算总分
+    let totalScore = 0;
+    totalScore += scoreMapping[reading] || 0;
+    totalScore += scoreMapping[writing] || 0;
+    totalScore += scoreMapping[speaking] || 0;
+    totalScore += scoreMapping[listening] || 0;
+
+    // 更新评分结果
+    console.log(`配偶的英语水平总分: ${totalScore}`);
+}
+
+// 绑定事件
+['spouse_english_reading', 'spouse_english_writing', 'spouse_english_speaking', 'spouse_english_listening'].forEach(id => {
+    document.getElementById(id).addEventListener('change', calculateSpouseScore);
+});
+</script>
+{% endblock %}

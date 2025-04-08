@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}个人信息{% endblock %}
+
+{% block content %}
+<h2>个人信息</h2>
+
+<!-- 外部容器，包含两个板块：基本信息和联系信息 -->
+<div class="profile-container">
+    <!-- 基本信息部分 -->
+    <div class="user-profile">
+        <h3>基本信息</h3>
+        <div class="profile-item">
+            <strong>用户名:</strong>
+            <span>{{ user['username'] }}</span>
+        </div>
+        <div class="profile-item">
+            <strong>全名:</strong>
+            <span>{{ user['fullname'] or '暂未填写' }}</span>
+        </div>
+        <div class="profile-item">
+            <strong>出生日期:</strong>
+            <span>{{ user['birthdate'] or '暂未填写' }}</span>
+        </div>
+        <div class="profile-item">
+            <strong>个人简介:</strong>
+            <span>{{ user['bio'] or '暂无' }}</span>
+        </div>
+    </div>
+
+    <!-- 联系信息部分 -->
+    <div class="user-profile">
+        <h3>联系信息</h3>
+        <div class="profile-item">
+            <strong>电子邮件:</strong>
+            <span>{{ user['email'] }}</span>
+        </div>
+        <div class="profile-item">
+            <strong>电话:</strong>
+            <span>{{ user['phone'] or '暂未填写' }}</span>
+        </div>
+        <div class="profile-item">
+            <strong>居住地址:</strong>
+            <span>{{ user['address'] or '暂未填写' }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- 按钮部分 -->
+<div class="button-container">
+    <a href="{{ url_for('edit_profile') }}" class="btn">编辑信息</a>
+    <a href="{{ url_for('home') }}" class="btn">返回首页</a>
+</div>
+
+{% endblock %}
